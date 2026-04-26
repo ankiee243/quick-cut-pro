@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EditorProjectIdRouteImport } from './routes/editor/$projectId'
 import { Route as ApiPublicRenderCallbackRouteImport } from './routes/api/public/render-callback'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditorProjectIdRoute = EditorProjectIdRouteImport.update({
+  id: '/editor/$projectId',
+  path: '/editor/$projectId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicRenderCallbackRoute = ApiPublicRenderCallbackRouteImport.update({
@@ -25,27 +31,31 @@ const ApiPublicRenderCallbackRoute = ApiPublicRenderCallbackRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/editor/$projectId': typeof EditorProjectIdRoute
   '/api/public/render-callback': typeof ApiPublicRenderCallbackRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/editor/$projectId': typeof EditorProjectIdRoute
   '/api/public/render-callback': typeof ApiPublicRenderCallbackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/editor/$projectId': typeof EditorProjectIdRoute
   '/api/public/render-callback': typeof ApiPublicRenderCallbackRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/public/render-callback'
+  fullPaths: '/' | '/editor/$projectId' | '/api/public/render-callback'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/public/render-callback'
-  id: '__root__' | '/' | '/api/public/render-callback'
+  to: '/' | '/editor/$projectId' | '/api/public/render-callback'
+  id: '__root__' | '/' | '/editor/$projectId' | '/api/public/render-callback'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EditorProjectIdRoute: typeof EditorProjectIdRoute
   ApiPublicRenderCallbackRoute: typeof ApiPublicRenderCallbackRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/editor/$projectId': {
+      id: '/editor/$projectId'
+      path: '/editor/$projectId'
+      fullPath: '/editor/$projectId'
+      preLoaderRoute: typeof EditorProjectIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/render-callback': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EditorProjectIdRoute: EditorProjectIdRoute,
   ApiPublicRenderCallbackRoute: ApiPublicRenderCallbackRoute,
 }
 export const routeTree = rootRouteImport

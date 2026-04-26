@@ -115,8 +115,8 @@ function EditorPage() {
     const onFrame = (e: { detail: { frame: number } }) => {
       setCurrentSec(e.detail.frame / FPS);
     };
-    p.addEventListener("frameupdate", onFrame as EventListener);
-    return () => p.removeEventListener("frameupdate", onFrame as EventListener);
+    p.addEventListener("frameupdate", onFrame);
+    return () => p.removeEventListener("frameupdate", onFrame);
   }, [project?.timeline.length]);
 
   function seekTo(sec: number) {
